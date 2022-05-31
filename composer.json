@@ -1,0 +1,35 @@
+{
+    "name": "bewil19/php-undected-webdriver",
+    "description": "An composer php undected webdriver.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Be Wilson",
+            "email": "be.wilson@benjamin-wilson.co.uk"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "ext-zip": "*",
+        "php-webdriver/webdriver": "^1.12"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3",
+        "phpunit/phpunit": "^9.4"
+    },
+    "autoload": {
+        "files": [
+            "src/functions.php"
+        ],
+        "psr-4": {
+            "UndectedWebdriver\\": "src"
+        }
+    },
+    "suggest": {
+        "ext-gmp": "For Permissions and 64 bit calculations on x86 (32 bit) PHP."
+    },
+    "scripts": {
+        "cs": ["./vendor/bin/php-cs-fixer fix"],
+        "unit": ["./vendor/bin/phpunit --testdox"]
+    }
+}
