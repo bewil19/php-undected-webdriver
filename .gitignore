@@ -4,6 +4,7 @@
 # composer
 /vendor
 composer.lock
+composer.phar
 
 # php-cs-fixer
 .php_cs.cache
@@ -13,3 +14,4 @@ composer.lock
 
 # temp
 workflows
+composer.phar
