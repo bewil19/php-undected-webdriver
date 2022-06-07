@@ -45,10 +45,8 @@ class Firefox
                 break;
         }
 
-        if (false == file_exists($this->dataPath())) {
-            if (false == mkdir($this->dataPath(), 0777, true)) {
-                throw new Exception('Unable to make dataPath at '.$this->dataPath());
-            }
+        if (!file_exists($this->dataPath()) && !mkdir($this->dataPath(), 0777, true)) {
+            throw new Exception('Unable to make dataPath at '.$this->dataPath());
         }
     }
 
@@ -96,10 +94,10 @@ class Firefox
 
     public function auto()
     {
-        if (false == $this->isBinaryPatched()) {
+        if (!$this->isBinaryPatched()) {
             $this->tempFolder = $this->dataPath().DIRECTORY_SEPARATOR.'tmpFiles';
             rrmdir($this->tempFolder);
-            if (false == mkdir($this->tempFolder, 0777, true)) {
+            if (!mkdir($this->tempFolder, 0777, true)) {
                 throw new Exception('Can\'t make temp folder!', 1);
             }
             $this->unzipPackage($this->fetchPackage());
@@ -112,7 +110,7 @@ class Firefox
     {
         $url = $this->urlRepo.'/releases/latest';
         $page = file_get_contents($url);
-        $re = '/Release [0-9]+.[0-9]+.[0-9]+/m';
+        $re = '/Release \d+.\d+.\d+/m';
         preg_match($re, $page, $matches);
 
         return str_replace('Release ', '', $matches[0]);
@@ -142,7 +140,7 @@ class Firefox
 
     private function unzipPackage($filepath)
     {
-        if (true == strstr($filepath, '.tar.gz')) {
+        if (strstr($filepath, '.tar.gz')) {
             $zip = new PharData($filepath);
             $zip->extractTo($this->tempFolder);
         } else {
@@ -172,7 +170,7 @@ class Firefox
 
     private function patch()
     {
-        if (false == $this->isBinaryPatched()) {
+        if (!$this->isBinaryPatched()) {
             $this->patchExe();
         }
 

@@ -11,7 +11,7 @@
 
 function rrmdir($dir)
 {
-    if (true == is_dir($dir)) {
+    if (is_dir($dir)) {
         $files = scandir($dir);
         foreach ($files as $file) {
             if ('.' != $file && '..' != $file) {
@@ -19,17 +19,17 @@ function rrmdir($dir)
             }
         }
         rmdir($dir);
-    } elseif (true == file_exists($dir)) {
+    } elseif (file_exists($dir)) {
         unlink($dir);
     }
 }
 
 function rcopy($src, $dst)
 {
-    if (true == file_exists($dst)) {
+    if (file_exists($dst)) {
         rrmdir($dst);
     }
-    if (true == is_dir($src)) {
+    if (is_dir($src)) {
         mkdir($dst);
         $files = scandir($src);
         foreach ($files as $file) {
@@ -37,7 +37,7 @@ function rcopy($src, $dst)
                 rcopy($src.DIRECTORY_SEPARATOR.$file, $dst.DIRECTORY_SEPARATOR.$file);
             }
         }
-    } elseif (true == file_exists($src)) {
+    } elseif (file_exists($src)) {
         copy($src, $dst);
     }
 }

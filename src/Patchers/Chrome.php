@@ -44,10 +44,8 @@ class Chrome
                 break;
         }
 
-        if (false == file_exists($this->dataPath())) {
-            if (false == mkdir($this->dataPath(), 0777, true)) {
-                throw new Exception('Unable to make dataPath at '.$this->dataPath());
-            }
+        if (!file_exists($this->dataPath()) && !mkdir($this->dataPath(), 0777, true)) {
+            throw new Exception('Unable to make dataPath at '.$this->dataPath());
         }
     }
 
@@ -95,10 +93,10 @@ class Chrome
 
     public function auto()
     {
-        if (false == $this->isBinaryPatched()) {
+        if (!$this->isBinaryPatched()) {
             $this->tempFolder = $this->dataPath().DIRECTORY_SEPARATOR.'tmpFiles';
             rrmdir($this->tempFolder);
-            if (false == mkdir($this->tempFolder, 0777, true)) {
+            if (!mkdir($this->tempFolder, 0777, true)) {
                 throw new Exception('Can\'t make temp folder!', 1);
             }
             $this->unzipPackage($this->fetchPackage());
@@ -154,7 +152,7 @@ class Chrome
 
     private function patch()
     {
-        if (false == $this->isBinaryPatched()) {
+        if (!$this->isBinaryPatched()) {
             $this->patchExe();
         }
 
@@ -163,7 +161,7 @@ class Chrome
 
     private function isBinaryPatched()
     {
-        if (true == file_exists($this->dataPath().DIRECTORY_SEPARATOR.$this->exeName())) {
+        if (file_exists($this->dataPath().DIRECTORY_SEPARATOR.$this->exeName())) {
             $file = fopen($this->dataPath().DIRECTORY_SEPARATOR.$this->exeName(), 'rb');
             $line = fread($file, filesize($this->dataPath().DIRECTORY_SEPARATOR.$this->exeName()));
             if (preg_match('/cdc_.{22}/m', $line)) {

@@ -21,7 +21,6 @@ use UndectedWebdriver\Patchers\Firefox as PatchersFirefox;
 class Firefox
 {
     private $driver;
-    private $devTools;
     private $dataPath;
 
     public function __construct($options = null)
@@ -31,7 +30,7 @@ class Firefox
 
         $this->dataPath = $patcher->dataPath();
 
-        if (true == empty($options)) {
+        if (empty($options)) {
             $options = new FirefoxOptions();
         }
 
@@ -44,14 +43,6 @@ class Firefox
 
         $options->setPreference('profile', $profile->encode());
 
-        /*$options->addArguments([
-            '--no-service-autorun',
-            '--disable-blink-features=AutomationControlled',
-        ]);
-
-        $options->setExperimentalOption('excludeSwitches', ['enable-automation']);
-        $options->setExperimentalOption('useAutomationExtension', false);*/
-
         $capabilites = DesiredCapabilities::firefox();
         $capabilites->setCapability(FirefoxOptions::CAPABILITY, $options);
 
@@ -61,8 +52,6 @@ class Firefox
         $this->driver = FirefoxDriver::startUsingDriverService($service, $capabilites);
 
         $this->driver->executeScript("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})");
-
-        // $this->devTools = $this->driver->getDevTools();
     }
 
     public function get(string $url)

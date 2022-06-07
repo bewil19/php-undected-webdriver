@@ -32,7 +32,7 @@ class Chrome
 
         $this->fixExitFlag();
 
-        if (true == empty($options)) {
+        if (empty($options)) {
             $options = new ChromeOptions();
         }
 
@@ -62,7 +62,7 @@ class Chrome
 
     public function get(string $url)
     {
-        if (true == is_array($this->getCDCprops())) {
+        if (is_array($this->getCDCprops())) {
             $this->removeCDCprops();
         }
 
@@ -103,7 +103,7 @@ class Chrome
     {
         $file = $this->dataPath.DIRECTORY_SEPARATOR.'chrome_user-data'.DIRECTORY_SEPARATOR.'Default'.DIRECTORY_SEPARATOR.'Preferences';
 
-        if (true == file_exists($file)) {
+        if (file_exists($file)) {
             $config = file_get_contents($file);
             $config = json_decode($config);
             if ('Normal' !== $config->profile->exit_type) {
