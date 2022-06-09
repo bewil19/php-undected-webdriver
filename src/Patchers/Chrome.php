@@ -11,7 +11,8 @@
 
 namespace UndectedWebdriver\Patchers;
 
-use Exception;
+use UndectedWebdriver\Exceptions\PlatformUnsupported;
+use UndectedWebdriver\Exceptions\UnableMakeFolder;
 use ZipArchive;
 
 class Chrome
@@ -39,13 +40,13 @@ class Chrome
                 break;
 
             default:
-                throw new Exception('Platform '.strtolower(php_uname('s')).' is not supported!', 1);
+                throw new PlatformUnsupported('Platform '.strtolower(php_uname('s')).' is not supported!', 1);
 
                 break;
         }
 
         if (!file_exists($this->dataPath()) && !mkdir($this->dataPath(), 0777, true)) {
-            throw new Exception('Unable to make dataPath at '.$this->dataPath());
+            throw new UnableMakeFolder('Unable to make dataPath at '.$this->dataPath());
         }
     }
 
@@ -97,7 +98,7 @@ class Chrome
             $this->tempFolder = $this->dataPath().DIRECTORY_SEPARATOR.'tmpFiles';
             rrmdir($this->tempFolder);
             if (!mkdir($this->tempFolder, 0777, true)) {
-                throw new Exception('Can\'t make temp folder!', 1);
+                throw new UnableMakeFolder('Can\'t make temp folder!', 1);
             }
             $this->unzipPackage($this->fetchPackage());
         }
